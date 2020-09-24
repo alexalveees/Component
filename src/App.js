@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react';
+import { Clock } from './Clock';
+import { Users } from './Users';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state= {
+    searchForUser: '',
+    isClockHidden: false
+  }
+
+  hideClock = () => {
+    this.setState({ isClockHidden: true})
+  }
+
+  render() {
+    const handleFormSubmit = (event) => {
+      event.preventDefault()
+      const inputValue = document.getElementById('search-input').value
+      this.setState({
+        searchForUser: inputValue
+      })
+    }
+
+    if (this.state.isClockHidden) {
+      return <h1>Clock is hidden</h1>
+    }
+
+    return (
+      <div>
+        <form onSubmit={handleFormSubmit}>
+          <input id="search-input" placeholder="Search for user"/>
+          <button>Search</button>
+        </form>
+        
+        <Users searchFor={this.state.searchForUser}/>
+        <div>
+          <button onClick={this.hideClock}>Hide Clock</button>
+          <Clock/>
+        </div>
+      </div>
+    ); 
+  }  
 }
 
-export default App;
