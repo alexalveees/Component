@@ -1,44 +1,22 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import { Clock } from './Clock';
-import { Users } from './Users';
+import { useWindowWidth } from './useWindowWidth';
 
-export default class App extends Component {
-  state= {
-    searchForUser: '',
-    isClockHidden: false
-  }
+export default function App () {
+  const widht = useWindowWidth()
+  const [isClockHidden, setIsClockHidden] = useState(false)
 
-  hideClock = () => {
-    this.setState({ isClockHidden: true})
-  }
-
-  render() {
-    const handleFormSubmit = (event) => {
-      event.preventDefault()
-      const inputValue = document.getElementById('search-input').value
-      this.setState({
-        searchForUser: inputValue
-      })
-    }
-
-    if (this.state.isClockHidden) {
+ 
+    if (isClockHidden) {
       return <h1>Clock is hidden</h1>
     }
 
     return (
       <div>
-        <form onSubmit={handleFormSubmit}>
-          <input id="search-input" placeholder="Search for user"/>
-          <button>Search</button>
-        </form>
-        
-        <Users searchFor={this.state.searchForUser}/>
-        <div>
-          <button onClick={this.hideClock}>Hide Clock</button>
-          <Clock/>
-        </div>
-      </div>
-    ); 
-  }  
+        <button onClick={ () => setIsClockHidden(true)}>Hide Clock</button>
+        <Clock />
+        <h1>{widht}</h1>
+      </div>  
+    )   
 }
 
